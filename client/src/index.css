@@ -1,0 +1,282 @@
+*{
+  margin: 0;
+  padding: 0;
+}
+body{
+  height: 100vh;
+  width: 100vw;
+}
+
+#Page{
+  height: 100vh;
+  width: 100vw;
+  background-color: #eee;
+}
+
+/* Main */
+
+#Main{
+  height: 96vh;
+  border:  .1px solid #CEC8C2;
+  box-shadow:  1px 1px 1px 1px rgba(0, 0, 0, 0.060),1px 5px 5px 1px rgba(0, 0, 0, 0.200);
+}
+
+@media only screen and (min-width: 1441px) {
+  #Main{
+    width: 1396px;
+    margin: 0 auto;
+  }
+}
+
+/* Panel */
+
+#Panel{
+  display: inline-block;
+  width: 30%;
+  height: 100%;
+  overflow: auto;
+  border-right:  1px solid #CEC8C2;
+}
+
+/* User */
+#User{
+  width: 100%;
+  height: 60px;
+  padding: 10px 16px;
+  position: relative;
+  border-bottom: 1px solid #CEC8C2;
+}
+
+.User-img{
+  width: 40px;
+  height: 40px;
+  border-radius: 50px;
+  display: inline-block;
+}
+
+.User-Settings{
+  display: inline-block;
+  position: absolute;
+  right: 10px;
+  top: 18px;
+  display: inline-block;
+  font-size: 25px;
+  color:black;
+  cursor: pointer;
+  transition: color .1s;
+}
+
+.User-Settings:hover{
+  color: rgb(32, 29, 75);
+  animation: App-logo-spin infinite 10s linear;
+}
+
+@keyframes App-logo-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* Users */
+
+#Users{
+  width: 100%;
+  overflow: auto;
+  height: calc(100% - 60px);
+}
+
+.Lobby{
+  width: 100%;
+  height: 72px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  transition: color .1s;
+}
+
+.Lobby:hover{
+  color: rgb(61, 56, 133);
+}
+
+.Lobby-img{
+  padding: 0 15px 0 13px;
+  display: inline-block;
+  
+}
+.Lobby-img div{
+  height: 49px;
+  width: 49px;
+  border-radius: 50px;
+}
+
+.Users-user{
+  width: 100%;
+  height: 72px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  transition: color .1s;
+}
+
+.Users-user:hover{
+  color: rgb(61, 56, 133);
+}
+
+.Users-user-img{
+  padding: 0 15px 0 13px;
+  display: inline-block;
+  
+}
+.Users-user-img div{
+  height: 49px;
+  width: 49px;
+  border-radius: 50px;
+}
+
+
+
+
+
+/* Chat */
+
+#Chat{
+  display: inline-block;
+  width: 70%;
+  height: 100%;
+  overflow: auto;
+}
+
+.chat-description{
+  height: 60px;
+  width: 100%;
+  border-bottom: 1px solid #CEC8C2;
+  padding: 10px 16px;
+}
+
+.chat-lobby-description-img{
+  width: 40px;
+  height: 40px;
+  border-radius: 50px;
+  display: inline-block;
+  overflow: auto;
+}
+
+.chat-lobby-description{
+  display: inline-block;
+  padding: 0 15px 0 13px;
+  overflow: auto;
+}
+
+
+.chat-user-description-img{
+  width: 40px;
+  height: 40px;
+  border-radius: 50px;
+  display: inline-block;
+  overflow: auto;
+}
+
+.chat-user-description{
+  display: inline-block;
+  padding: 0 15px 0 13px;
+}
+
+.chat-user-description p,h5{
+  padding: 0;
+  margin: 0;
+}
+
+.Mesaj{
+  width: 100%;
+  height: calc(100% - 60px);
+}
+
+.chat-space{
+  width: 100%;
+  height: calc(100% - 62px);
+  overflow: auto;
+}
+
+#scroll-style::-webkit-scrollbar-track
+{
+
+	background-color: transparent;
+	border-radius: 10px;
+}
+
+#scroll-style::-webkit-scrollbar
+{
+	width: 8px;
+	background-color: transparent;
+}
+
+#scroll-style::-webkit-scrollbar-thumb
+{
+	border-radius: 10px;
+	background-image: -webkit-gradient(linear,
+									   left bottom,
+									   left top,
+									   color-stop(0.44, rgb(122,153,217)),
+									   color-stop(0.72, rgb(73,125,189)),
+									   color-stop(0.86, rgb(28,58,148)));
+}
+
+.gelen-msg{
+  max-width: fit-content;
+  width: 40%;
+  background-color: black;
+  padding: 5px 10px 5px 10px;
+  color: white;
+  border-radius: 5px;
+  margin: 10px 0px;
+  margin-left: 5%;
+  word-wrap: break-word;
+}
+.gonderilen-msg{
+  max-width: fit-content;
+  width: 40%;
+  background-color: blue;
+  padding: 5px 10px 5px 10px;
+  color: white;
+  border-radius: 5px;
+  margin: 10px 0px;
+  margin-left: 60%;
+  word-wrap: break-word;
+} 
+
+.send-msg-space{
+  width: 100%;
+  height: 62px;
+  background-color: white;
+  padding: 5px 10px;
+}
+
+.send-msg-text-space{
+  width: 90%;
+  display: inline-block;
+}
+
+.send-msg-text{
+  border-radius: 50px;
+  border: none;
+}
+
+.send-msg-text:focus{
+  border: none;
+  box-shadow: none;
+}
+
+
+
+.send-msg-button-space{
+  width: 10%;
+  display: inline-block;
+}
+
+.send-msg-button{
+  width: 40px;
+  height: 40px;
+  border-radius: 50px;
+  margin-left: 10px;
+}
