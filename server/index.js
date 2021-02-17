@@ -27,18 +27,25 @@ const db = [
             name:"Omer",
             pass:"$2b$10$Vwtp6DsdbvY6xeAoUiR2QO/0/hwYIutjJDrnK.000A05d6sOAXN1C",
             online:false,
-            token:""
+            token:"",
+            socketId:""
       },
       {
             id:"ali1",
             name:"Ali",
             pass:"$2b$10$Vwtp6DsdbvY6xeAoUiR2QO/0/hwYIutjJDrnK.000A05d6sOAXN1C",
             online:false,
-            token:""
+            token:"",
+            socketId:""
       },
 ]
 
 //pass: 123
+
+
+var lobby = []
+
+
 
 io.on("connection",(socket)=>{
 

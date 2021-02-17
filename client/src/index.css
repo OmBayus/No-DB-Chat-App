@@ -10,7 +10,10 @@ body{
 #Page{
   height: 100vh;
   width: 100vw;
-  background-color: #eee;
+  /* background-color: #eee; */
+  background-image: url("./Images/bg3.jpg");
+  background-size: cover;
+  background-repeat: no-repeat;
 }
 
 /* Main */
@@ -36,6 +39,7 @@ body{
   height: 100%;
   overflow: auto;
   border-right:  1px solid #CEC8C2;
+  background-color: #eee;
 }
 
 /* User */
@@ -152,6 +156,7 @@ body{
   width: 100%;
   border-bottom: 1px solid #CEC8C2;
   padding: 10px 16px;
+  background-color: #eee;
 }
 
 .chat-lobby-description-img{
@@ -223,20 +228,24 @@ body{
 }
 
 .gelen-msg{
+  word-wrap: break-word;
+}
+
+.gelen-msg-lobby{
   max-width: fit-content;
   width: 40%;
-  background-color: black;
+  background-color: #03182D;
   padding: 5px 10px 5px 10px;
   color: white;
   border-radius: 5px;
   margin: 10px 0px;
   margin-left: 5%;
-  word-wrap: break-word;
 }
+
 .gonderilen-msg{
   max-width: fit-content;
   width: 40%;
-  background-color: blue;
+  background-color: #0464BD;
   padding: 5px 10px 5px 10px;
   color: white;
   border-radius: 5px;

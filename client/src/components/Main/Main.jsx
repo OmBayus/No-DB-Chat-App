@@ -15,6 +15,7 @@ import LobbyDes from "./Components/Chat/LobbyDes"
 import UserDes from "./Components/Chat/UserDes"
 import GelenMsg from "./Components/Chat/GelenMsg"
 import GonderilenMsg from "./Components/Chat/GonderilenMsg"
+import GelenMsgLobby from "./Components/Chat/GelenMsgLobby"
 
 //Socket
 import {socket} from "../../socket"
@@ -23,6 +24,9 @@ import {socket} from "../../socket"
 function Main() {
   const [isAuth,setAuth] = useState(false)
   const [name,setName] = useState("")
+  
+  //Selected Space State
+  const [selectedSpace,setSelectedSpace] = useState("Lobby")
 
   useEffect(()=>{
     let token = Cookies.get("token")
@@ -42,6 +46,11 @@ function Main() {
     })
   },[])
 
+  const handleSpace = e=>{
+    const name = e.target.getAttribute('name')
+    setSelectedSpace(name)
+  }
+
   return (
       <div id="Page">
         {isAuth && <Redirect to="/" />}
@@ -50,21 +59,20 @@ function Main() {
           <div id="Panel">
             <User/>
             <div id="Users">
-              <Lobby/>
+              <Lobby onClick={handleSpace}/>
               {/* Map */}
-              <UsersUser/>
-              <UsersUser/>
-              <UsersUser/>
-              <UsersUser/>
+              <UsersUser name="Omer" online={true} onClick={handleSpace}/>
+              <UsersUser name="Ali" online={false} onClick={handleSpace}/>
+              <UsersUser name="Furkkan" online={false} onClick={handleSpace}/>
+              <UsersUser name="Fırat" online={true} onClick={handleSpace}/>
               {/* Map */}
             </div>
           </div>
           <div id="Chat">
-            <LobbyDes/>
-            {/* <UserDes/> */}
+            {selectedSpace === "Lobby" ? <LobbyDes/> : <UserDes name={selectedSpace} online="Offline"/>}
             <div className="Mesaj">
               <div id="scroll-style" className="chat-space">
-                <GelenMsg>Sa</GelenMsg>
+                <GelenMsgLobby name="Ömer">Sa</GelenMsgLobby>
                 <GonderilenMsg>As</GonderilenMsg>
               </div>
               <div className="send-msg-space">
