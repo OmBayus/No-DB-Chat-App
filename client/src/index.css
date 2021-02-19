@@ -243,16 +243,21 @@ body{
 }
 
 .gonderilen-msg{
+  color: white;
+  display: flex;
+  justify-content: flex-end;
+  width: 90%;
+}
+
+.gonderilen-msg div{
   max-width: fit-content;
   width: 40%;
   background-color: #0464BD;
   padding: 5px 10px 5px 10px;
-  color: white;
   border-radius: 5px;
   margin: 10px 0px;
-  margin-left: 60%;
   word-wrap: break-word;
-} 
+}
 
 .send-msg-space{
   width: 100%;
