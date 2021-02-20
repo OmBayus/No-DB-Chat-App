@@ -23,10 +23,14 @@ import {socket} from "../../socket"
 
 function Main() {
   const [isAuth,setAuth] = useState(false)
-  const [name,setName] = useState("")
+  const [kullanici,setKullanici] = useState({id:"",name:""})
+  const [People,SetPeople] = useState([])
   
   //Selected Space State
   const [selectedSpace,setSelectedSpace] = useState("Lobby")
+
+  //Mesaj
+  const [mesaj,setMesaj] = useState("")
 
   useEffect(()=>{
     let token = Cookies.get("token")
@@ -38,7 +42,9 @@ function Main() {
   useEffect(()=>{
     socket.on("auth",(info)=>{
           if(info.auth){
-                setName(info.name)
+            var tempPeople = info.users.filter((item)=> item.id !== info.id)
+            SetPeople(tempPeople)
+            setKullanici({id:String(info.id),name:String(info.name)})
           }
           else{
                 setAuth(true)
@@ -46,9 +52,31 @@ function Main() {
     })
   },[])
 
+  useEffect(()=>{
+    socket.on("online",(info)=>{
+      var tempPeople = info.filter((item)=> item.id !== kullanici.id)
+      SetPeople(tempPeople)
+    })
+  })
+
+  useEffect(()=>{
+    socket.on("GelenMesaj",(data)=>{
+      console.log(data)
+    })
+  })
+
   const handleSpace = e=>{
     const name = e.target.getAttribute('name')
     setSelectedSpace(name)
+  }
+
+  const handleMesaj = e =>{
+    setMesaj(e.target.value)
+  }
+
+  const MesajGonderme = (e)=>{
+    socket.emit("MesajGonderme",{mesaj:mesaj,name:kullanici.name,who:selectedSpace})
+    setMesaj("")
   }
 
   return (
@@ -61,10 +89,7 @@ function Main() {
             <div id="Users">
               <Lobby onClick={handleSpace}/>
               {/* Map */}
-              <UsersUser name="Omer" online={true} onClick={handleSpace}/>
-              <UsersUser name="Ali" online={false} onClick={handleSpace}/>
-              <UsersUser name="Furkkan" online={false} onClick={handleSpace}/>
-              <UsersUser name="Fırat" online={true} onClick={handleSpace}/>
+              {People.map(item=>(<UsersUser key={item.name} name={item.name} online={item.online} onClick={handleSpace}/>))}
               {/* Map */}
             </div>
           </div>
@@ -77,10 +102,10 @@ function Main() {
               </div>
               <div className="send-msg-space">
                 <div className="send-msg-text-space">
-                <Form.Control size="lg" type="text" placeholder="Type a message" className="send-msg-text"/>
+                <Form.Control size="lg" type="text" onChange={handleMesaj} value={mesaj} placeholder="Type a message" className="send-msg-text"/>
                 </div>
                 <div className="send-msg-button-space">
-                  <Button className="send-msg-button"><AiOutlineSend/></Button>
+                  <Button className="send-msg-button" onClick={MesajGonderme}><AiOutlineSend/></Button>
                 </div>
               </div>
             </div>

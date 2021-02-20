@@ -38,12 +38,20 @@ const db = [
             token:"",
             socketId:""
       },
+      {
+            id:"furkkan1",
+            name:"Furkkan",
+            pass:"$2b$10$Vwtp6DsdbvY6xeAoUiR2QO/0/hwYIutjJDrnK.000A05d6sOAXN1C",
+            online:false,
+            token:"",
+            socketId:""
+      },
 ]
 
 //pass: 123
 
 
-var lobby = []
+var Mesajlar = []
 
 
 
@@ -85,11 +93,53 @@ io.on("connection",(socket)=>{
             const user = db.find((user) => user.token === token);
 
             if(user){
-                  socket.emit("auth",{auth:true,name:user.name})
+                  var users = []
+                  user.online = true
+                  user.socketId = socket.id
+                  db.map((item)=>users.push({name:item.name,online:item.online,id:item.id}))
+                  socket.emit("auth",{auth:true,name:user.name,id:user.id,users:users})
+                  socket.broadcast.emit("online",users)
             }
             else{
                   socket.emit("auth",{auth:false})
             }  
+      })
+
+
+      //GelenMesajlar
+      socket.on("MesajGonderme",(data)=>{
+            db.map(user=>{
+                  if(user.online){
+                        if(data.who === "Lobby"){
+                              io.sockets.to(user.socketId).emit("GelenMesaj",{mesaj:data.mesaj,name:data.name,isLobby:true})
+                        }
+                        else if(data.who.toLowerCase() === user.name.toLowerCase()){
+                              io.sockets.to(user.socketId).emit("GelenMesaj",{mesaj:data.mesaj,name:data.name,isLobby:false})
+                        }
+                  }
+                  else{
+                        if(data.who === user.name || data.who === "Lobby"){
+                              Mesajlar.push(data)
+                              console.log(Mesajlar)
+                        }
+                  }
+            })
+      })
+
+      //User disconnect
+
+      socket.on("disconnect",()=>{
+            const id = socket.id
+            
+            const user = db.find((user) => user.socketId === id);
+            if(user){
+                  user.online = false
+                  var users = []
+                  db.map((item)=>users.push({name:item.name,online:item.online,id:item.id}))
+
+                  socket.broadcast.emit("online",users)
+            }
+            
       })
 
 })
