@@ -19,12 +19,13 @@ import GelenMsgLobby from "./Components/Chat/GelenMsgLobby"
 
 //Socket
 import {socket} from "../../socket"
+var kullanici = {id:"",name:""}
 
 
 function Main() {
   const [isAuth,setAuth] = useState(false)
-  const [kullanici,setKullanici] = useState({id:"",name:""})
   const [People,SetPeople] = useState([])
+  const [mesajSpace,SetmesajSpace] = useState("")
   
   //Selected Space State
   const [selectedSpace,setSelectedSpace] = useState("Lobby")
@@ -44,7 +45,7 @@ function Main() {
           if(info.auth){
             var tempPeople = info.users.filter((item)=> item.id !== info.id)
             SetPeople(tempPeople)
-            setKullanici({id:String(info.id),name:String(info.name)})
+            kullanici= {id:String(info.id),name:String(info.name)}
           }
           else{
                 setAuth(true)
@@ -61,13 +62,34 @@ function Main() {
 
   useEffect(()=>{
     socket.on("GelenMesaj",(data)=>{
-      console.log(data)
+      if(data.isLobby){
+        let temp = localStorage.getItem((kullanici.name+"Lobby"));
+        if(temp){
+          localStorage.setItem((kullanici.name+"Lobby"),(temp+`${data.name}:${data.mesaj}-|-`))
+        }
+        else{
+          localStorage.setItem((kullanici.name+"Lobby"),`${data.name}:${data.mesaj}-|-`)
+        }
+        
+      }
+      else{
+        let temp = localStorage.getItem((kullanici.name+data.name));
+        if(temp){
+          localStorage.setItem((kullanici.name+data.name),(temp+`${data.mesaj}-|-`))
+        }
+        else{
+          localStorage.setItem((kullanici.name+data.name),`${data.mesaj}-|-`)
+        }
+        
+      }
     })
-  })
+  },[])
 
   const handleSpace = e=>{
     const name = e.target.getAttribute('name')
     setSelectedSpace(name)
+    let mesajlar = localStorage.getItem((kullanici.name+name));
+    SetmesajSpace(mesajlar)
   }
 
   const handleMesaj = e =>{
@@ -97,6 +119,9 @@ function Main() {
             {selectedSpace === "Lobby" ? <LobbyDes/> : <UserDes name={selectedSpace} online="Offline"/>}
             <div className="Mesaj">
               <div id="scroll-style" className="chat-space">
+                {
+                  
+                }
                 <GelenMsgLobby name="Ömer">Sa</GelenMsgLobby>
                 <GonderilenMsg>As</GonderilenMsg>
               </div>
