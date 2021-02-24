@@ -61,9 +61,9 @@ function Main() {
   })
 
   useEffect(()=>{
-    socket.on("GelenMesaj",(data)=>{
+    socket.on("GelenMesaj",async (data)=>{
       if(data.isLobby){
-        let temp = localStorage.getItem((kullanici.name+"Lobby"));
+        let temp = await localStorage.getItem((kullanici.name+"Lobby"));
         if(temp){
           localStorage.setItem((kullanici.name+"Lobby"),(temp+`${data.name}:${data.mesaj}-|-`))
         }
@@ -73,7 +73,7 @@ function Main() {
         
       }
       else{
-        let temp = localStorage.getItem((kullanici.name+data.name));
+        let temp = await localStorage.getItem((kullanici.name+data.name));
         if(temp){
           localStorage.setItem((kullanici.name+data.name),(temp+`${data.mesaj}-|-`))
         }
