@@ -50,7 +50,6 @@ const db = [
 
 //pass: 123
 
-
 var Mesajlar = []
 
 
@@ -89,7 +88,7 @@ io.on("connection",(socket)=>{
       })
 
       //Kullanıcı Token Sorgusu
-      socket.on("auth",token=>{
+      socket.on("auth",async(token)=>{
             const user = db.find((user) => user.token === token);
 
             if(user){
@@ -97,11 +96,30 @@ io.on("connection",(socket)=>{
                   user.online = true
                   user.socketId = socket.id
                   db.map((item)=>users.push({name:item.name,online:item.online,id:item.id}))
-                  socket.emit("auth",{auth:true,name:user.name,id:user.id,users:users})
-                  socket.broadcast.emit("online",users)
+                  await socket.emit("auth",{auth:true,name:user.name,id:user.id,users:users})
+                  await socket.broadcast.emit("online",users)
+
+                  //Mesaj Gönderimi
+                  var temp = []
+                  Mesajlar.map(async(item)=>{
+                        if(item.kime === user.name){
+                              if(item.lobbymi){
+                                    await io.sockets.to(socket.id).emit("GelenMesaj",{mesaj:item.mesaj,name:item.kimden,isLobby:true})
+                              }
+                              else{
+                                    await io.sockets.to(socket.id).emit("GelenMesaj",{mesaj:item.mesaj,name:item.kimden,isLobby:false})
+                              }
+                        }
+                        else{
+                              temp.push(item)
+                        }
+                  })
+
+                  Mesajlar = temp
+
             }
             else{
-                  socket.emit("auth",{auth:false})
+                  await socket.emit("auth",{auth:false})
             }  
       })
 
@@ -116,10 +134,17 @@ io.on("connection",(socket)=>{
                         else if(data.who.toLowerCase() === user.name.toLowerCase()){
                               io.sockets.to(user.socketId).emit("GelenMesaj",{mesaj:data.mesaj,name:data.name,isLobby:false})
                         }
+                        else if(data.name === user.name){
+                              io.sockets.to(user.socketId).emit("GelenMesaj",{mesaj:data.mesaj,name:data.name,who:data.who,isLobby:false})
+                        }
                   }
                   else{
-                        if(data.who === user.name || data.who === "Lobby"){
-                              Mesajlar.push(data)
+                        if(data.who === user.name){
+                              Mesajlar.push({mesaj:data.mesaj,kime:user.name,kimden:data.name,lobbymi:false})
+                              console.log(Mesajlar)
+                        }
+                        else if(data.who === "Lobby"){
+                              Mesajlar.push({mesaj:data.mesaj,kime:user.name,kimden:data.name,lobbymi:true})
                               console.log(Mesajlar)
                         }
                   }

@@ -13,7 +13,6 @@ import UsersUser from "./Components/Panel/UsersUser"
 //Chat Components
 import LobbyDes from "./Components/Chat/LobbyDes"
 import UserDes from "./Components/Chat/UserDes"
-import GelenMsg from "./Components/Chat/GelenMsg"
 import GonderilenMsg from "./Components/Chat/GonderilenMsg"
 import GelenMsgLobby from "./Components/Chat/GelenMsgLobby"
 
@@ -73,23 +72,38 @@ function Main() {
         
       }
       else{
-        let temp = await localStorage.getItem((kullanici.name+data.name));
-        if(temp){
-          localStorage.setItem((kullanici.name+data.name),(temp+`${data.mesaj}-|-`))
+        if(data.name === kullanici.name){
+          let temp = await localStorage.getItem((kullanici.name+data.who));
+          if(temp){
+            localStorage.setItem((kullanici.name+data.who),(temp+`${data.name}:${data.mesaj}-|-`))
+          }
+          else{
+            localStorage.setItem((kullanici.name+data.who),(`${data.name}:${data.mesaj}-|-`))
+          }
         }
         else{
-          localStorage.setItem((kullanici.name+data.name),`${data.mesaj}-|-`)
+          let temp = await localStorage.getItem((kullanici.name+data.name));
+          if(temp){
+            localStorage.setItem((kullanici.name+data.name),(temp+`${data.name}:${data.mesaj}-|-`))
+          }
+          else{
+            localStorage.setItem((kullanici.name+data.name),(`${data.name}:${data.mesaj}-|-`))
+          }
         }
-        
       }
+      let mesajlar = await localStorage.getItem((kullanici.name+selectedSpace));
+      SetmesajSpace(mesajlar)
     })
-  },[])
+  })
+
+  useEffect(()=>{
+    let mesajlar = localStorage.getItem((kullanici.name+selectedSpace));
+    SetmesajSpace(mesajlar)
+  },[selectedSpace])
 
   const handleSpace = e=>{
     const name = e.target.getAttribute('name')
     setSelectedSpace(name)
-    let mesajlar = localStorage.getItem((kullanici.name+name));
-    SetmesajSpace(mesajlar)
   }
 
   const handleMesaj = e =>{
@@ -120,10 +134,16 @@ function Main() {
             <div className="Mesaj">
               <div id="scroll-style" className="chat-space">
                 {
-                  
+                  mesajSpace && mesajSpace.split("-|-").filter(item=>item !=="").map((item,index)=>{
+                    var a = item.split(":")
+                    if(a[0] === kullanici.name){
+                      return(<GonderilenMsg key={index}>{a[1]}</GonderilenMsg>)
+                    }
+                    else{
+                      return(<GelenMsgLobby key={index} name={a[0]}>{a[1]}</GelenMsgLobby>)
+                    }
+                  })
                 }
-                <GelenMsgLobby name="Ömer">Sa</GelenMsgLobby>
-                <GonderilenMsg>As</GonderilenMsg>
               </div>
               <div className="send-msg-space">
                 <div className="send-msg-text-space">
