@@ -46,6 +46,14 @@ const db = [
             token:"",
             socketId:""
       },
+      {
+            id:"kerem1",
+            name:"Kerem",
+            pass:"$2b$10$Vwtp6DsdbvY6xeAoUiR2QO/0/hwYIutjJDrnK.000A05d6sOAXN1C",
+            online:false,
+            token:"",
+            socketId:""
+      }
 ]
 
 //pass: 123

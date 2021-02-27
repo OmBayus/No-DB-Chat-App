@@ -28,6 +28,7 @@ function Main() {
   
   //Selected Space State
   const [selectedSpace,setSelectedSpace] = useState("Lobby")
+  const [durum,setDurum] = useState("Offline")
 
   //Mesaj
   const [mesaj,setMesaj] = useState("")
@@ -104,6 +105,17 @@ function Main() {
   const handleSpace = e=>{
     const name = e.target.getAttribute('name')
     setSelectedSpace(name)
+
+    var secilen = People.find(item=>item.name === name)
+
+    if(secilen){
+      if(secilen.online){
+        setDurum("Online")
+      }
+      else{
+        setDurum("Offline")
+      }
+    }
   }
 
   const handleMesaj = e =>{
@@ -130,7 +142,7 @@ function Main() {
             </div>
           </div>
           <div id="Chat">
-            {selectedSpace === "Lobby" ? <LobbyDes/> : <UserDes name={selectedSpace} online="Offline"/>}
+            {selectedSpace === "Lobby" ? <LobbyDes/> : <UserDes name={selectedSpace} online={durum}/>}
             <div className="Mesaj">
               <div id="scroll-style" className="chat-space">
                 {

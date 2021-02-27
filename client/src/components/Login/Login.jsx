@@ -20,7 +20,7 @@ export default function Login() {
       useEffect(()=>{
             socket.on("login",data=>{
                   if(data.auth){
-                        Cookies.set("token",data.token, { expires: 1/24/60/2 })
+                        Cookies.set("token",data.token, { expires: 1 })
                         setTimeout(()=>{setAuth(true)},500)
                   }
                   else{
