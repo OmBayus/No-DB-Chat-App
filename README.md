@@ -14,6 +14,7 @@ https://www.youtube.com/watch?v=LrPJelJU9hc
 * React Bootstrap
 * Socket.io
 * Express
+* Local Storage
 
 ## Setup
 
